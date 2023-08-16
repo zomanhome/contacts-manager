@@ -8,6 +8,6 @@ const App = () => {
   )
 }
 
-const app = document.querySelector('#contacts-manager')
+const app = document.querySelector('.app')
 
 reactDOM.render(<App/>, app)
