@@ -8,6 +8,6 @@ body {
 
 .app {
     display: flex;
-    font-size: 14px;
-    color: darkblue;
+    flex-direction: column;
 }
+
