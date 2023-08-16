@@ -13,7 +13,12 @@ const App = () => {
     })
   }, [])
 
-  return <pre>{JSON.stringify(contacts, null, 2)}</pre>
+  return (
+    <>
+      {!!contacts.length && <pre>{JSON.stringify(contacts, null, 2)}</pre>}
+    </>
+
+  )
 }
 
 export default App
