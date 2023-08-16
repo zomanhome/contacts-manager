@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import {getContacts} from './api/contacts'
+import '../static/styles.css'
 
 const App = () => {
   const [contacts, setContacts] = useState([])
