@@ -1,5 +1,9 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin")
+
+const ROOT_PATH = path.join(__dirname, './')
+
 const htmlPlugin = new HtmlWebPackPlugin({
   template: "./static/index.html",
   filename: "./index.html"
@@ -26,5 +30,15 @@ module.exports = {
       }
     ]
   },
-  plugins: [htmlPlugin]
+  plugins: [
+    htmlPlugin,
+    new CopyPlugin({
+      patterns: [
+        {
+          from: '*.css',
+          context: path.resolve(__dirname, 'static')
+        },
+      ]
+    })
+  ]
 }
