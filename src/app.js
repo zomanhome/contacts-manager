@@ -15,9 +15,15 @@ const App = () => {
 
   return (
     <>
-      {!!contacts.length && <pre>{JSON.stringify(contacts, null, 2)}</pre>}
+      {contacts.map(contact => {
+        return (
+          <div key={contact['_id']}>
+            <h2>{contact.name}</h2>
+            <h3>{contact.email}</h3>
+          </div>
+        )
+      })}
     </>
-
   )
 }
 
