@@ -1,0 +1,13 @@
+html, body, .app {
+    min-height: 100vh;
+}
+
+body {
+    background: #f0f2f5;
+}
+
+.app {
+    display: flex;
+    font-size: 26px;
+    background: grey;
+}
