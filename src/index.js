@@ -1,13 +1,13 @@
 import reactDOM from "react-dom"
 import React from "react"
+import "../static/styles.css"
 
 const App = () => {
-
   return (
-    <div>
-      <h1>Contacts manager</h1>
-    </div>
+    <div>Contacts manager</div>
   )
 }
 
-reactDOM.render(<App />, document.getElementById("app"))
+const app = document.querySelector('.app')
+
+reactDOM.render(<App/>, app)
