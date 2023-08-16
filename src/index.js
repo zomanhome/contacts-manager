@@ -1,13 +1,9 @@
-import reactDOM from "react-dom"
+import {createRoot} from 'react-dom/client'
 import React from "react"
-import "../static/styles.css"
 
-const App = () => {
-  return (
-    <div>Contacts manager</div>
-  )
-}
+import App from "./app"
 
 const app = document.querySelector('.app')
+const root = createRoot(app)
 
-reactDOM.render(<App/>, app)
+root.render(<App/>)
