@@ -3,11 +3,11 @@ html, body, .app {
 }
 
 body {
-    background: #f0f2f5;
+    padding: 8px;
+    margin: 8px;
 }
 
 .app {
     display: flex;
-    flex-direction: column;
 }
 
