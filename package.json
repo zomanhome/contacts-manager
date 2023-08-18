@@ -16,7 +16,6 @@
     "@babel/core": "^7.22.10",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/preset-react": "^7.22.5",
-    "@types/antd": "^1.0.0",
     "babel-loader": "^9.1.3",
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^11.0.0",
@@ -28,10 +27,14 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@badm/react-store": "^1.0.7",
     "antd": "^5.8.3",
     "axios": "^1.4.0",
     "gh-pages": "^6.0.0",
+    "mobx": "^6.10.0",
+    "mobx-react-lite": "^4.0.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.0.7"
   }
 }

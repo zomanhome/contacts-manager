@@ -1,30 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import {DatePicker, Space} from 'antd'
-import {getContacts} from "../api/contacts"
+import {getContacts, useContacts} from "../api/contacts"
+import {store} from "../store/contacts"
+import {observer} from "mobx-react-lite"
 
-const ContactsTable = () => {
-  const [contacts, setContacts] = useState([])
+const ContactsTable = observer(() => {
+  // const [contacts, setContacts] = useState([])
+
+  const contacts = store.get().ContactsStore.contacts
+  const [execute, isInFly] = useContacts.useLocal()
 
   useEffect(() => {
-    getContacts().then(response => {
-      const {data: {data}} = response
-
-      setContacts(data)
-    })
+    execute().then()
   }, [])
 
   return (
-    <Space direction='vertical'>
-      {contacts.map(contact => {
-        return (
-          <Space key={contact['_id']}>
-            <h2>{contact.name}</h2>
-            <h3>{contact.email}</h3>
-          </Space>
-        )
-      })}
-    </Space>
+    <div>Contacts table</div>
   )
-}
+})
 
 export default ContactsTable

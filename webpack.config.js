@@ -38,6 +38,10 @@ module.exports = {
           from: '*.css',
           context: path.resolve(__dirname, 'static')
         },
+        {
+          from: '*.ico',
+          context: path.resolve(__dirname, 'static')
+        },
       ]
     })
   ]
