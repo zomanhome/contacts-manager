@@ -5,14 +5,12 @@ import {store} from "../store"
 import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
 import styled from "styled-components"
-import {defaultSort} from "../helpers/sort"
 
 const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
-
 const Title = ({updateContacts, addContact}) => (
   <TitleWrapper>
     <h1>Contacts</h1>
@@ -49,7 +47,7 @@ const ContactsTable = observer(() => {
       title: "Favorite",
       dataIndex: "favorite",
       render: (favorite) => favorite ? <>Yes</> : <>No</>,
-      sorter: (a, b) => a["favorite"] !== b["favorite"],
+      sorter: (a, b) => b["favorite"] - a["favorite"],
       sortDirections: ["ascend"],
     },
   ]
