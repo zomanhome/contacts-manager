@@ -5,6 +5,7 @@ import {store} from "../store"
 import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
 import styled from "styled-components"
+import {CloudDownloadOutlined} from "@ant-design/icons"
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Title = ({updateContacts, addContact}) => (
   <TitleWrapper>
     <h1>Contacts</h1>
     <Space>
-      <Button onClick={updateContacts}>Update contacts</Button>
+      <Button onClick={updateContacts}><CloudDownloadOutlined /></Button>
       <Button type="primary" onClick={addContact}>Add contact</Button>
     </Space>
   </TitleWrapper>

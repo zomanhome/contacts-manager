@@ -28,6 +28,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.5",
     "@badm/react-store": "^1.0.7",
     "antd": "^5.8.3",
     "gh-pages": "^6.0.0",
