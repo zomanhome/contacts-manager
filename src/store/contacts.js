@@ -10,7 +10,8 @@ class ContactsStore {
   }
 
   setContacts(contacts) {
-    this._contacts.replace(contacts.map(contact => ({...contact, key: contact["_id"]})))
+    // this._contacts.replace(contacts.map(contact => ({...contact, key: contact["_id"]})))
+    this._contacts.replace(contacts)
   }
 }
 
