@@ -13,11 +13,27 @@ const ContactsTable = observer(() => {
     execute().then()
   }, [])
 
+  const columns = [
+    {
+      title: "Name Surname",
+      dataIndex: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phone",
+    },
+  ]
+
   return (
     <Table
-      title={() => "Contacts"}
+      title={() => <strong>Contacts</strong>}
       dataSource={toJS(contacts)}
       loading={isInFly}
+      columns={columns}
     />
   )
 })

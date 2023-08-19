@@ -52,7 +52,6 @@ http.requestInterceptor(options => {
 export const getAllContacts = store.createRequest()
   .fetch(http.get("/api/contacts"))
   .mutateStore((store, data, request, vars) => {
-    console.log(data)
     store.ContactsStore.setContacts(data)
   })
   .registerErrorsHandler((store, errors, request, variables) => {
