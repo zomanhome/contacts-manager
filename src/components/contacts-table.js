@@ -30,6 +30,7 @@ const ContactsTable = observer(() => {
 
   return (
     <Table
+      style={{margin: "8px 8px",}}
       title={() => <strong>Contacts</strong>}
       dataSource={toJS(contacts)}
       loading={isInFly}

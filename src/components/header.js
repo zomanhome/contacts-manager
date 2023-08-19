@@ -3,11 +3,11 @@ import ThemeSwitcher from "./theme-switcher"
 import styled from "styled-components"
 
 const TopPanel = styled.div`
-  width: 100%;
+  //width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 8px;
+  margin: 8px 8px;
 `
 
 const Header = () => {
