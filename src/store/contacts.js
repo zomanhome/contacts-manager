@@ -1,14 +1,17 @@
-import { createStore } from "@badm/react-store"
-import { observable } from "mobx"
+import {action, observable} from "mobx"
 
-const ContactsStore = observable({
-  contacts: observable.array([])
-})
+class ContactsStore {
+  @observable
+  _contacts = observable.array([])
 
-export const store = createStore({
-  ContactsStore
-})
+  @action
+  getAllContacts() {
+    return this._contacts
+  }
 
-store.setDefaultErrorsHandler((store, errors, request) => {
-  // обработка ошибок возникающих при запросах
-})
+  setContacts(contacts) {
+    this._contacts.replace(contacts)
+  }
+}
+
+export default ContactsStore

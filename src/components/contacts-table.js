@@ -1,21 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import {DatePicker, Space} from 'antd'
-import {getContacts, useContacts} from "../api/contacts"
-import {store} from "../store/contacts"
+import React, {useEffect} from 'react'
+import {Table} from 'antd'
+import {getAllContacts} from "../api/contacts"
+import {store} from "../store"
 import {observer} from "mobx-react-lite"
+import {toJS} from "mobx"
 
 const ContactsTable = observer(() => {
-  // const [contacts, setContacts] = useState([])
-
-  const contacts = store.get().ContactsStore.contacts
-  const [execute, isInFly] = useContacts.useLocal()
+  const contacts = store.get().ContactsStore.getAllContacts()
+  const [execute, isInFly] = getAllContacts.useLocal()
 
   useEffect(() => {
     execute().then()
   }, [])
 
   return (
-    <div>Contacts table</div>
+    <Table
+      title={() => "Contacts"}
+      dataSource={toJS(contacts)}
+      loading={isInFly}
+    />
   )
 })
 
