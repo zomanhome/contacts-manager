@@ -4,8 +4,8 @@ import {switchTheme} from "../services/theme-service"
 
 const ThemeSwitcher = () => {
   return <Switch
-    checkedChildren="Light theme"
-    unCheckedChildren="Dark theme"
+    checkedChildren="Light"
+    unCheckedChildren="Dark"
     defaultChecked
     onChange={switchTheme}
   />
