@@ -9,10 +9,14 @@ const ThemeSwitcher = () => {
 
   const toggleDarkMode = () => {
     currentTheme.set(isDarkMode ? "light" : "dark")
-    setIsDarkMode(previous => {
-      switcher({theme: previous ? themes.light : themes.dark})
-      return !previous
-    })
+
+    setTimeout(() => {
+      setIsDarkMode(previous => {
+        switcher({theme: previous ? themes.light : themes.dark})
+        return !previous
+      })
+    }, 0)
+
   }
 
   return <Switch
