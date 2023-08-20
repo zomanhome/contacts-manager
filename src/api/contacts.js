@@ -49,10 +49,19 @@ http.requestInterceptor(options => {
   })
 })
 
-export const getAllContacts = store.createRequest()
+export const getAllContactsRequest = store.createRequest()
   .fetch(http.get("/api/contacts"))
   .mutateStore((store, data, request, vars) => {
     store.ContactsStore.setContacts(data)
+  })
+  .registerErrorsHandler((store, errors, request, variables) => {
+    console.log(errors)
+  })
+
+export const deleteContactRequest = store.createRequest()
+  .fetch(http.delete(({request: {id}}) => `/api/contacts/${id}`))
+  .mutateStore((store, data, request, vars) => {
+    getAllContactsRequest.getExecutor().execute().then()
   })
   .registerErrorsHandler((store, errors, request, variables) => {
     console.log(errors)

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Table, Typography, Popconfirm, Form, InputNumber, Input, Space, Button} from "antd"
-import {getAllContacts} from "../../api/contacts"
+import {getAllContactsRequest, deleteContactRequest} from "../../api/contacts"
 import {store} from "../../store"
 import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
@@ -10,7 +10,10 @@ import {CloseOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@ant-de
 
 const ContactsTable = observer(() => {
   const contacts = store.get().ContactsStore.getAllContacts()
-  const [execute, isInFly] = getAllContacts.useLocal()
+  const [getAllContacts, getAllContactsFly] = getAllContactsRequest.useLocal()
+  const [deleteContact, deleteContactFly] = deleteContactRequest.useLocal()
+
+  const isInFly = getAllContactsFly || deleteContactFly
 
   const [form] = Form.useForm()
   const [data, setData] = useState(contacts)
@@ -38,11 +41,11 @@ const ContactsTable = observer(() => {
     }
   }
   const remove = (record) => {
-    console.log(record)
+    deleteContact({id: record.key}).then()
   }
 
   useEffect(() => {
-    execute().then()
+    getAllContacts().then()
   }, [])
 
   const columns = [
@@ -50,16 +53,19 @@ const ContactsTable = observer(() => {
       title: "Name Surname",
       dataIndex: "name",
       editable: true,
+      width: "35%",
     },
     {
       title: "Email",
       dataIndex: "email",
       editable: true,
+      width: "40%",
     },
     {
       title: "Phone Number",
       dataIndex: "phone",
       editable: true,
+      width: "25%",
     },
     {
       title: "Favorite",
@@ -92,7 +98,7 @@ const ContactsTable = observer(() => {
           </Space>
         )
       },
-      width: 150,
+      width: 60,
     }
   ]
 
@@ -116,6 +122,7 @@ const ContactsTable = observer(() => {
   return (
     <Form form={form} component={false}>
       <Table
+        size="small"
         rowKey={record => record["_id"]}
         components={{
           body: {
@@ -124,7 +131,7 @@ const ContactsTable = observer(() => {
         }}
         title={() => <Title
           isEditing={editingKey !== ""}
-          updateContacts={() => execute()}
+          updateContacts={() => getAllContacts()}
           addContact={() => {
             console.log("Later...")
           }}
