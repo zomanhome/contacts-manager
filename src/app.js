@@ -1,20 +1,23 @@
 import React from "react"
-import {ConfigProvider, theme} from "antd"
-import enUS from "antd/locale/en_US"
 import "../static/styles.css"
-import ContactsTable from "./components/contacts-table"
 import Header from "./components/header"
 import {observer} from "mobx-react-lite"
-import {algorithm} from "./services/theme-service"
 import Layout from "./components/layout";
+import ContactsTable from "./components/contacts-table"
+import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
+import {ConfigProvider} from "antd"
+import enUS from "antd/locale/en_US"
+import {themes, algorithm} from "./services/theme-service"
 
 const App = observer(() => {
   return (
     <ConfigProvider locale={enUS} theme={algorithm()}>
-      <Layout>
-        <Header/>
-        <ContactsTable/>
-      </Layout>
+      <ThemeSwitcherProvider themeMap={themes} defaultTheme="light">
+        <Layout>
+          <Header/>
+          <ContactsTable/>
+        </Layout>
+      </ThemeSwitcherProvider>
     </ConfigProvider>
   )
 })
