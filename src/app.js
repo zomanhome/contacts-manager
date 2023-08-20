@@ -2,8 +2,8 @@ import React from "react"
 import "../static/styles.css"
 import Header from "./components/header"
 import {observer} from "mobx-react-lite"
-import Layout from "./components/layout";
-import ContactsTable from "./components/contacts-table"
+import Layout from "./components/layout"
+import ContactsTable from "./components/contacts/contacts-table"
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
 import {ConfigProvider} from "antd"
 import enUS from "antd/locale/en_US"
