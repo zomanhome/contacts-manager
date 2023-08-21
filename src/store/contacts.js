@@ -2,7 +2,7 @@ import {action, observable} from "mobx"
 
 class ContactsStore {
   @observable
-  _contacts = observable.array([])
+  _contacts = observable.array([], {deep: true})
 
   @action
   getAllContacts() {
@@ -10,8 +10,9 @@ class ContactsStore {
   }
 
   setContacts(contacts) {
-    this._contacts.replace(contacts.map(contact => ({...contact, key: contact["_id"]})))
-    // this._contacts.replace(contacts)
+    this._contacts.replace(contacts.map(contact =>
+      contact.key ? contact : {...contact, key: contact["_id"]}
+    ))
   }
 }
 

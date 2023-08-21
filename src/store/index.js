@@ -3,10 +3,9 @@ import ContactsStore from "./contacts"
 import {AppStore} from "./app"
 import {configure} from "mobx"
 
-configure({
-  useProxies: "never",
-
-})
+// configure({
+//   useProxies: "never",
+// })
 
 export const store = createStore({
   AppStore,

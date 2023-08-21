@@ -14,7 +14,7 @@ export const EditableCell = ({
   const inputNode = inputType === "number" ? <InputNumber/> : <Input/>
 
   return (
-    <td {...restProps}>
+    <td {...restProps} style={{verticalAlign: "top"}}>
       {editing ? (
         <Form.Item
           name={dataIndex}

@@ -66,3 +66,12 @@ export const deleteContactRequest = store.createRequest()
   .registerErrorsHandler((store, errors, request, variables) => {
     console.log(errors)
   })
+
+export const addContactRequest = store.createRequest()
+  .fetch(http.post("/api/contacts"))
+  .mutateStore((store, data, request, vars) => {
+    getAllContactsRequest.getExecutor().execute().then()
+  })
+  .registerErrorsHandler((store, errors, request, variables) => {
+    console.log(errors)
+  })
