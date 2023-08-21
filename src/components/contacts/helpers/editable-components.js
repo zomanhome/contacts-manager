@@ -23,7 +23,7 @@ export const EditableCell = ({
     }],
     email: [{
       required: true,
-      message: "name@domain.com",
+      message: "name@domain.domain",
       type: "email",
     }],
     phone: [{
