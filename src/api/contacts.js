@@ -68,3 +68,9 @@ export const addContactRequest = store.createRequest()
 export const editContactRequest = store.createRequest()
   .fetch(http.put(({request: {key}}) => `/api/contacts/${key}`))
   .immutable()
+
+export const toggleFavoriteRequest = store.createRequest()
+  .fetch(http.patch(({request: {key}}) => `/api/contacts/${key}/favorite`))
+  .mutateStore((store, data, request, vars) => {
+    getAllContactsRequest.getExecutor().execute().then()
+  })

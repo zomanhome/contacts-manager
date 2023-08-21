@@ -29,7 +29,7 @@ export const EditableCell = ({
     phone: [{
       required: true,
       message: "10-15 digits",
-      pattern: /^[0-9]{10,15}/,
+      pattern: /^[0-9]{10,15}$/,
     }],
   }
 

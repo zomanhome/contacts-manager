@@ -1,10 +1,15 @@
 import {action} from "mobx"
-import {message, notification} from "antd"
+import {notification} from "antd"
 
 class ErrorsStore {
   @action
   pushError(errorText) {
-    message.error(`Error: ${errorText}`).then()
+    notification.error({
+      message: "Server error",
+      description: `${errorText}`,
+      placement: "bottomRight",
+      duration: 5,
+    })
   }
 }
 

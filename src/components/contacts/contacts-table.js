@@ -1,13 +1,20 @@
 import React, {useEffect, useState} from "react"
-import {Button, Form, Popconfirm, Space, Table, Typography} from "antd"
-import {addContactRequest, deleteContactRequest, getAllContactsRequest, editContactRequest} from "../../api/contacts"
+import {Form, Table} from "antd"
+import {
+  addContactRequest,
+  deleteContactRequest,
+  getAllContactsRequest,
+  editContactRequest,
+  toggleFavoriteRequest
+} from "../../api/contacts"
 import {store} from "../../store"
 import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
 import Title from "./helpers/title"
 import {EditableCell} from "./helpers/editable-components"
-import {CloseOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@ant-design/icons"
 import moment from "moment"
+import Favorite from "./helpers/favorite";
+import Operations from "./helpers/operations";
 
 const ContactsTable = observer(() => {
   const {ContactsStore, Errors} = store.get()
@@ -17,12 +24,14 @@ const ContactsTable = observer(() => {
   const [deleteContact, deleteContactFly] = deleteContactRequest.useLocal()
   const [addContact, addContactFly] = addContactRequest.useLocal()
   const [editContact, editContactFly] = editContactRequest.useLocal()
+  const [toggleFavorite, toggleFavoriteFly] = toggleFavoriteRequest.useLocal()
 
   const isInFly =
     getAllContactsFly
     || deleteContactFly
     || addContactFly
     || editContactFly
+    || toggleFavoriteFly
 
   const [form] = Form.useForm()
   // const [data, setData] = useState(contacts)
@@ -91,16 +100,17 @@ const ContactsTable = observer(() => {
     deleteContact({id: record.key}).then()
   }
   const add = () => {
-    const key = `_new${Math.random()}`
     const record = {
-      key,
       name: "",
       email: "",
       phone: "",
       favorite: false,
     }
+    const key = `_new${Math.random()}`
+
+    form.setFieldsValue(record)
     setEditingKey(key)
-    ContactsStore.setContacts([record, ...contacts])
+    ContactsStore.setContacts([{...record, key}, ...contacts])
   }
 
   useEffect(() => {
@@ -126,7 +136,20 @@ const ContactsTable = observer(() => {
     {
       title: "Favorite",
       dataIndex: "favorite",
-      render: favorite => favorite ? <>Yes</> : <>No</>,
+      render: (_, record) =>
+        /^_new\d+/.test(record.key) || isEditing(record)
+          ? <></>
+          : <Favorite
+            record={record}
+            toggleFavorite={toggleFavorite}
+          />,
+      filters: [
+        {
+          text: "Favorite",
+          value: true,
+        },
+      ],
+      onFilter: (value, record) => record.favorite,
     },
     {
       title: "Created",
@@ -140,25 +163,14 @@ const ContactsTable = observer(() => {
       dataIndex: "operation",
       render: (_, record) => {
         const editable = isEditing(record)
-        return editable ? (
-          <Space>
-            <Typography.Link onClick={() => save(record)}>
-              <Button type="primary"><SaveOutlined/></Button>
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(record)}>
-              <Button><CloseOutlined/></Button>
-            </Popconfirm>
-          </Space>
-        ) : (
-          <Space>
-            <Typography.Link disabled={editingKey !== ""} onClick={() => edit(record)}>
-              <Button><EditOutlined/></Button>
-            </Typography.Link>
-            <Popconfirm title="Sure to delete?" onConfirm={() => remove(record)}>
-              <Button><DeleteOutlined/></Button>
-            </Popconfirm>
-          </Space>
-        )
+        return <Operations
+          record={record}
+          editingKey={editingKey}
+          save={save}
+          cancel={cancel}
+          edit={edit}
+          remove={remove}
+        />
       },
       width: 60,
     }
@@ -168,12 +180,12 @@ const ContactsTable = observer(() => {
     if (!col.editable) {
       return col
     }
+
     return {
       ...col,
       onCell: (record) => ({
         record,
         inputType: col.dataIndex === "text",
-        // inputType: col.dataIndex === "age" ? "number" : "text",
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -199,6 +211,7 @@ const ContactsTable = observer(() => {
         dataSource={toJS(contacts)}
         loading={isInFly}
         columns={mergedColumns}
+        pagination={false}
       />
     </Form>
   )
