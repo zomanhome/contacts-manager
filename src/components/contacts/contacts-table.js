@@ -14,7 +14,7 @@ import Title from "./helpers/title"
 import {EditableCell} from "./helpers/editable-components"
 import moment from "moment"
 import Favorite from "./helpers/favorite";
-import Operations from "./helpers/operations";
+import Operations from "./helpers/operations"
 
 const ContactsTable = observer(() => {
   const {ContactsStore, Errors} = store.get()
@@ -34,7 +34,6 @@ const ContactsTable = observer(() => {
     || toggleFavoriteFly
 
   const [form] = Form.useForm()
-  // const [data, setData] = useState(contacts)
   const [editingKey, setEditingKey] = useState("")
   const isEditing = (record) => record.key === editingKey
 
@@ -122,6 +121,8 @@ const ContactsTable = observer(() => {
       title: "Name Surname",
       dataIndex: "name",
       editable: true,
+      sorter: (a, b) => b.name.length - a.name.length,
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: "Email",
