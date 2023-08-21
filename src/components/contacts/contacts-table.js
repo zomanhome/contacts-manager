@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Popconfirm, Space, Table, Typography} from "antd"
-import {addContactRequest, deleteContactRequest, getAllContactsRequest} from "../../api/contacts"
+import {addContactRequest, deleteContactRequest, getAllContactsRequest, editContactRequest} from "../../api/contacts"
 import {store} from "../../store"
 import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
@@ -10,14 +10,19 @@ import {CloseOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@ant-de
 import moment from "moment"
 
 const ContactsTable = observer(() => {
-  const {ContactsStore} = store.get()
+  const {ContactsStore, Errors} = store.get()
   const contacts = ContactsStore.getAllContacts()
 
   const [getAllContacts, getAllContactsFly] = getAllContactsRequest.useLocal()
   const [deleteContact, deleteContactFly] = deleteContactRequest.useLocal()
   const [addContact, addContactFly] = addContactRequest.useLocal()
+  const [editContact, editContactFly] = editContactRequest.useLocal()
 
-  const isInFly = getAllContactsFly || deleteContactFly || addContactFly
+  const isInFly =
+    getAllContactsFly
+    || deleteContactFly
+    || addContactFly
+    || editContactFly
 
   const [form] = Form.useForm()
   // const [data, setData] = useState(contacts)
@@ -29,6 +34,15 @@ const ContactsTable = observer(() => {
     data.shift()
 
     ContactsStore.setContacts(data)
+  }
+
+  function updateContacts(success, errorText) {
+    if (success) {
+      setEditingKey("")
+      getAllContacts().then()
+    } else {
+      Errors.pushError(errorText)
+    }
   }
 
   const edit = (record) => {
@@ -51,16 +65,24 @@ const ContactsTable = observer(() => {
     try {
       const row = await form.validateFields()
 
-      addContact({
-        name: row.name,
-        email: row.email,
-        phone: row.phone,
-      }).then(({success, data}) => {
-        if (success) {
-          ContactsStore.setContacts([...contacts], data)
-          setEditingKey("")
-        }
-      })
+      if (/^_new\d+/.test(record.key)) {
+        addContact({
+          name: row.name,
+          email: row.email,
+          phone: row.phone,
+        }).then(({success, data, message}) => {
+          updateContacts(success, message)
+        })
+      } else {
+        editContact({
+          key: record.key, // TODO: dirty fields only, remove key and use post.)
+          name: row.name,
+          email: row.email,
+          phone: row.phone,
+        }).then(({success, data, message}) => {
+          updateContacts(success, message)
+        })
+      }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo)
     }

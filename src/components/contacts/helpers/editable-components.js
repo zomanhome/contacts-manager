@@ -13,6 +13,26 @@ export const EditableCell = ({
                              }) => {
   const inputNode = inputType === "number" ? <InputNumber/> : <Input/>
 
+  const rules = {
+    name: [{
+      required: true,
+      pattern: /^[a-zA-Z]+\s[a-zA-Z]+$/,
+      min: (3),
+      max: (40),
+      message: "Name Surname",
+    }],
+    email: [{
+      required: true,
+      message: "name@domain.com",
+      type: "email",
+    }],
+    phone: [{
+      required: true,
+      message: "10-15 digits",
+      pattern: /^[0-9]{10,15}/,
+    }],
+  }
+
   return (
     <td {...restProps} style={{verticalAlign: "top"}}>
       {editing ? (
@@ -21,12 +41,7 @@ export const EditableCell = ({
           style={{
             margin: 0,
           }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
+          rules={rules[dataIndex] ? rules[dataIndex] : []}
         >
           {inputNode}
         </Form.Item>

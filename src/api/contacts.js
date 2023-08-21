@@ -54,24 +54,17 @@ export const getAllContactsRequest = store.createRequest()
   .mutateStore((store, data, request, vars) => {
     store.ContactsStore.setContacts(data)
   })
-  .registerErrorsHandler((store, errors, request, variables) => {
-    console.log(errors)
-  })
 
 export const deleteContactRequest = store.createRequest()
   .fetch(http.delete(({request: {id}}) => `/api/contacts/${id}`))
   .mutateStore((store, data, request, vars) => {
     getAllContactsRequest.getExecutor().execute().then()
   })
-  .registerErrorsHandler((store, errors, request, variables) => {
-    console.log(errors)
-  })
 
 export const addContactRequest = store.createRequest()
   .fetch(http.post("/api/contacts"))
-  .mutateStore((store, data, request, vars) => {
-    getAllContactsRequest.getExecutor().execute().then()
-  })
-  .registerErrorsHandler((store, errors, request, variables) => {
-    console.log(errors)
-  })
+  .immutable()
+
+export const editContactRequest = store.createRequest()
+  .fetch(http.put(({request: {key}}) => `/api/contacts/${key}`))
+  .immutable()
