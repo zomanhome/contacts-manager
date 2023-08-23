@@ -19,14 +19,14 @@ export const ColumnsSettingsSwitch = ({params}) => {
   }, [params])
 
   return (
-    <div onClick={e => e.stopPropagation()}>
+    <span onClick={e => e.stopPropagation()}>
       <Switch
         checked={columnsSettings.createdAt}
         onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
         checkedChildren="Created"
         unCheckedChildren={columnsSettings.sortOrder ? "Created ▼" : "Created"}
       />
-    </div>)
+    </span>)
 }
 
 export default function getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove}) {
