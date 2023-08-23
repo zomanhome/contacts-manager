@@ -12,9 +12,7 @@ import {observer} from "mobx-react-lite"
 import {toJS} from "mobx"
 import Title from "./helpers/title"
 import {EditableCell} from "./helpers/editable-components"
-import moment from "moment"
-import Favorite from "./helpers/favorite";
-import Operations from "./helpers/operations"
+import getTableColumns from "./helpers/columns"
 
 const ContactsTable = observer(() => {
   const {ContactsStore, Errors} = store.get()
@@ -37,13 +35,6 @@ const ContactsTable = observer(() => {
   const [editingKey, setEditingKey] = useState("")
   const isEditing = (record) => record.key === editingKey
 
-  function shiftContact() {
-    const data = [...contacts]
-    data.shift()
-
-    ContactsStore.setContacts(data)
-  }
-
   function updateContacts(success, errorText) {
     if (success) {
       setEditingKey("")
@@ -54,39 +45,34 @@ const ContactsTable = observer(() => {
   }
 
   const edit = (record) => {
-    form.setFieldsValue({
-      name: "",
-      email: "",
-      phone: "",
-      ...record,
-    })
+    form.setFieldsValue(record)
     setEditingKey(record.key)
   }
   const cancel = (record) => {
     if (/^_new\d+/.test(record.key)) {
-      shiftContact()
+      ContactsStore.deleteNewContact()
     }
 
     setEditingKey("")
   }
   const save = async (record) => {
     try {
-      const row = await form.validateFields()
+      const {name, email, phone} = await form.validateFields()
 
       if (/^_new\d+/.test(record.key)) {
         addContact({
-          name: row.name,
-          email: row.email,
-          phone: row.phone,
-        }).then(({success, data, message}) => {
+          name,
+          email,
+          phone,
+        }).then(({success, message}) => {
           updateContacts(success, message)
         })
       } else {
         editContact({
-          key: record.key, // TODO: dirty fields only, remove key and use post.)
-          name: row.name,
-          email: row.email,
-          phone: row.phone,
+          key: record.key, // TODO: dirty fields only
+          name,
+          email,
+          phone,
         }).then(({success, data, message}) => {
           updateContacts(success, message)
         })
@@ -99,101 +85,23 @@ const ContactsTable = observer(() => {
     deleteContact({id: record.key}).then()
   }
   const add = () => {
+    const key = `_new${Math.random()}`
     const record = {
       name: "",
       email: "",
       phone: "",
       favorite: false,
     }
-    const key = `_new${Math.random()}`
 
     form.setFieldsValue(record)
     setEditingKey(key)
-    ContactsStore.setContacts([{...record, key}, ...contacts])
+
+    ContactsStore.addNewContact({...record, key})
   }
 
   useEffect(() => {
     getAllContacts().then()
   }, [])
-
-  const columns = [
-    {
-      title: "Name Surname",
-      dataIndex: "name",
-      editable: true,
-      sorter: (a, b) => b.name.length - a.name.length,
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      editable: true,
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phone",
-      editable: true,
-    },
-    {
-      title: "Favorite",
-      dataIndex: "favorite",
-      render: (_, record) =>
-        /^_new\d+/.test(record.key) || isEditing(record)
-          ? <></>
-          : <Favorite
-            record={record}
-            toggleFavorite={toggleFavorite}
-          />,
-      filters: [
-        {
-          text: "Favorite",
-          value: true,
-        },
-      ],
-      onFilter: (_, record) => record.favorite,
-    },
-    {
-      title: "Created",
-      dataIndex: "createdAt",
-      render: createdAt => moment(createdAt).format("DD MMM YYYY HH:mm"),
-      sorter: (a, b) =>
-        moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
-      sortDirections: ["descend"],
-      defaultSortOrder: "descend",
-    },
-    {
-      dataIndex: "operation",
-      render: (_, record) => {
-        const editable = isEditing(record)
-        return <Operations
-          record={record}
-          editingKey={editingKey}
-          save={save}
-          cancel={cancel}
-          edit={edit}
-          remove={remove}
-        />
-      },
-      width: 60,
-    }
-  ]
-
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col
-    }
-
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === "text",
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    }
-  })
 
   return (
     <Form form={form} component={false}>
@@ -208,11 +116,11 @@ const ContactsTable = observer(() => {
         title={() => <Title
           isEditing={editingKey !== ""}
           updateContacts={() => getAllContacts()}
-          addContact={() => add()}
+          addContact={add}
         />}
         dataSource={toJS(contacts)}
         loading={isInFly}
-        columns={mergedColumns}
+        columns={getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove})}
         pagination={false}
       />
     </Form>

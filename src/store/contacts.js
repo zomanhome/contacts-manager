@@ -9,10 +9,21 @@ class ContactsStore {
     return this._contacts
   }
 
+  @action
   setContacts(contacts) {
     this._contacts.replace(contacts.map(contact =>
       contact.key ? contact : {...contact, key: contact["_id"]}
     ))
+  }
+
+  @action
+  addNewContact(contact) {
+    this._contacts.replace([contact, ...this._contacts])
+  }
+
+  @action
+  deleteNewContact() {
+    this._contacts.replace([...this._contacts.slice(1)])
   }
 }
 
