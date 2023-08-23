@@ -3,19 +3,19 @@ import moment from "moment/moment"
 import Operations from "./operations"
 import React from "react"
 import {observable} from "mobx"
-import {Space, Switch} from "antd"
+import {Switch} from "antd"
 
 export const columnsSettings = observable({
   createdAt: true,
 })
 
 export const ColumnsSettingsSwitch = ({checkedText, uncheckedText}) => {
-  return <Switch
+  return <div onClick={e => e.stopPropagation()}><Switch
     defaultChecked={columnsSettings.createdAt}
     onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
-    checkedChildren={checkedText || "_"}
-    unCheckedChildren={uncheckedText || "_"}
-  />
+    checkedChildren={checkedText || " "}
+    unCheckedChildren={uncheckedText || " "}
+  /></div>
 }
 
 export default function getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove}) {
