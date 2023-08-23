@@ -2,8 +2,23 @@ import Favorite from "./favorite"
 import moment from "moment/moment"
 import Operations from "./operations"
 import React from "react"
+import {observable} from "mobx"
+import {Space, Switch} from "antd"
 
-export default function getTableColumns ({editingKey, toggleFavorite, save, cancel, edit, remove}) {
+export const columnsSettings = observable({
+  createdAt: true,
+})
+
+export const ColumnsSettingsSwitch = ({checkedText, uncheckedText}) => {
+  return <Switch
+    defaultChecked={columnsSettings.createdAt}
+    onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
+    checkedChildren={checkedText || "_"}
+    unCheckedChildren={uncheckedText || "_"}
+  />
+}
+
+export default function getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove}) {
   const isEditing = (record) => record.key === editingKey
 
   const columns = [
@@ -13,16 +28,19 @@ export default function getTableColumns ({editingKey, toggleFavorite, save, canc
       editable: true,
       sorter: (a, b) => b.name.length - a.name.length,
       sortDirections: ["ascend", "descend"],
+      display: true,
     },
     {
       title: "Email",
       dataIndex: "email",
       editable: true,
+      display: true,
     },
     {
       title: "Phone Number",
       dataIndex: "phone",
       editable: true,
+      display: true,
     },
     {
       title: "Favorite",
@@ -41,15 +59,17 @@ export default function getTableColumns ({editingKey, toggleFavorite, save, canc
         },
       ],
       onFilter: (_, record) => record.favorite,
+      display: true,
     },
     {
-      title: "Created",
+      title: () => <ColumnsSettingsSwitch checkedText="Created"/>,
       dataIndex: "createdAt",
       render: createdAt => moment(createdAt).format("DD MMM YYYY HH:mm"),
       sorter: (a, b) =>
         moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
       sortDirections: ["descend"],
       defaultSortOrder: "descend",
+      display: columnsSettings.createdAt,
     },
     {
       dataIndex: "operation",
@@ -65,10 +85,11 @@ export default function getTableColumns ({editingKey, toggleFavorite, save, canc
         />
       },
       width: 60,
+      display: true,
     }
   ]
 
-  return columns.map((col) => {
+  return columns.filter(col => col.display).map(col => {
     if (!col.editable) {
       return col
     }
