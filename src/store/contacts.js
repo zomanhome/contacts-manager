@@ -11,7 +11,9 @@ class ContactsStore {
 
   @action
   setContacts(contacts) {
-    this._contacts.replace(contacts)
+    this._contacts.replace(contacts.map(contact =>
+      contact.key ? contact : {...contact, key: contact["_id"]}
+    ))
   }
 
   @action
