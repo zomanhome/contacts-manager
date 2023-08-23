@@ -15,8 +15,10 @@ autorun(() => {
 })
 
 export function algorithm() {
+  const isLight = currentTheme.get() === "light"
+
   return {
-    algorithm: currentTheme.get() === "light"
+    algorithm: isLight
       ? theme.defaultAlgorithm
       : theme.darkAlgorithm
   }

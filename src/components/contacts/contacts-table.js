@@ -150,7 +150,7 @@ const ContactsTable = observer(() => {
           value: true,
         },
       ],
-      onFilter: (value, record) => record.favorite,
+      onFilter: (_, record) => record.favorite,
     },
     {
       title: "Created",
@@ -159,6 +159,7 @@ const ContactsTable = observer(() => {
       sorter: (a, b) =>
         moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
       sortDirections: ["descend"],
+      defaultSortOrder: "descend",
     },
     {
       dataIndex: "operation",
