@@ -1,4 +1,4 @@
-import {observable} from "mobx"
+import {autorun, observable} from "mobx"
 import {theme} from "antd"
 
 export const themes = {
@@ -6,7 +6,13 @@ export const themes = {
   dark: "./dark-theme.css",
 }
 
-export const currentTheme = observable.box("light")
+const THEME = "THEME"
+
+export const currentTheme = observable.box(localStorage.getItem(THEME) || "light")
+
+autorun(() => {
+  localStorage.setItem(THEME, currentTheme.get())
+})
 
 export function algorithm() {
   return {

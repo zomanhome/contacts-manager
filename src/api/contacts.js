@@ -1,7 +1,7 @@
 import {store} from "../store"
 import http from "@badm/react-store/lib/http"
 
-const BASE_URL = "http://127.0.0.1:3000"
+const BASE_URL = "https://contacts-manager-08of.onrender.com"
 
 http.setBaseUrl(BASE_URL)
 

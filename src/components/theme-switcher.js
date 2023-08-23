@@ -5,25 +5,19 @@ import {currentTheme} from "../services/theme-service"
 
 const ThemeSwitcher = () => {
   const {switcher, themes, status} = useThemeSwitcher()
-  const [isDarkMode, setIsDarkMode] = React.useState(false)
+
+  const isLight = currentTheme.get() === "light"
 
   const toggleDarkMode = () => {
-    currentTheme.set(isDarkMode ? "light" : "dark")
-
-    setTimeout(() => {
-      setIsDarkMode(previous => {
-        switcher({theme: previous ? themes.light : themes.dark})
-        return !previous
-      })
-    }, 0)
-
+    isLight ? currentTheme.set("dark") : currentTheme.set("light")
+    switcher({theme: isLight ? themes.light : themes.dark})
   }
 
   return <Switch
     loading={status === "loading"}
     checkedChildren="Light"
     unCheckedChildren="Dark"
-    defaultChecked
+    defaultChecked={isLight}
     onChange={toggleDarkMode}
   />
 }

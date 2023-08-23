@@ -7,12 +7,12 @@ import ContactsTable from "./components/contacts/contacts-table"
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
 import {ConfigProvider} from "antd"
 import enUS from "antd/locale/en_US"
-import {themes, algorithm} from "./services/theme-service"
+import {themes, algorithm, currentTheme} from "./services/theme-service"
 
 const App = observer(() => {
   return (
     <ConfigProvider locale={enUS} theme={algorithm()}>
-      <ThemeSwitcherProvider themeMap={themes} defaultTheme="light">
+      <ThemeSwitcherProvider themeMap={themes} defaultTheme={currentTheme.get()}>
         <Layout>
           <Header/>
           <ContactsTable/>
