@@ -107,7 +107,6 @@ const ContactsTable = observer(() => {
     <Form form={form} component={false}>
       <Table
         size="small"
-        rowKey={record => record["_id"]}
         components={{
           body: {
             cell: EditableCell,
