@@ -1,21 +1,32 @@
 import Favorite from "./favorite"
 import moment from "moment/moment"
 import Operations from "./operations"
-import React from "react"
+import React, {useEffect} from "react"
 import {observable} from "mobx"
 import {Switch} from "antd"
 
 export const columnsSettings = observable({
   createdAt: true,
+  sortOrder: "descend",
 })
 
-export const ColumnsSettingsSwitch = ({checkedText, uncheckedText}) => {
-  return <div onClick={e => e.stopPropagation()}><Switch
-    defaultChecked={columnsSettings.createdAt}
-    onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
-    checkedChildren={checkedText || " "}
-    unCheckedChildren={uncheckedText || " "}
-  /></div>
+export const ColumnsSettingsSwitch = ({params}) => {
+
+  useEffect(() => {
+    return () => {
+      columnsSettings.sortOrder = params?.sortOrder
+    }
+  }, [params])
+
+  return (
+    <div onClick={e => e.stopPropagation()}>
+      <Switch
+        checked={columnsSettings.createdAt}
+        onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
+        checkedChildren="Created"
+        unCheckedChildren={columnsSettings.sortOrder ? "Created ▼" : "Created"}
+      />
+    </div>)
 }
 
 export default function getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove}) {
@@ -23,7 +34,12 @@ export default function getTableColumns({editingKey, toggleFavorite, save, cance
 
   const columns = [
     {
-      title: "Name Surname",
+      title: params => {
+        if (params?.sortColumn?.dataIndex === "name") {
+          columnsSettings.sortOrder = undefined
+        }
+        return <>Name Surname</>
+      },
       dataIndex: "name",
       editable: true,
       sorter: (a, b) => b.name.length - a.name.length,
@@ -62,7 +78,7 @@ export default function getTableColumns({editingKey, toggleFavorite, save, cance
       display: true,
     },
     {
-      title: () => <ColumnsSettingsSwitch checkedText="Created"/>,
+      title: params => <ColumnsSettingsSwitch params={params}/>,
       dataIndex: "createdAt",
       render: createdAt => moment(createdAt).format("DD MMM YYYY HH:mm"),
       sorter: (a, b) =>
