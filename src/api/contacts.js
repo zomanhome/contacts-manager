@@ -1,12 +1,8 @@
 import {store} from "../store"
 import http from "@badm/react-store/lib/http"
 
-const BASE_URL = "https://contacts-manager-08of.onrender.com"
+http.setBaseUrl(process.env.API_URL)
 
-http.setBaseUrl(BASE_URL)
-
-// Перед выполнением любой запрос можно модифицировать.
-// Те же параметры доступны для каждого запроса по отдельности.
 http.requestInterceptor(options => {
   // options.useBearerToken("...")
   options.useResponseFormat("json") // json | text | blob
