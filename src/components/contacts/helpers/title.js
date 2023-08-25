@@ -6,12 +6,11 @@ import {columnsSettings, ColumnsSettingsSwitch} from "./columns"
 
 const TitleWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `
 const Title = ({updateContacts, addContact, isEditing}) => (
   <TitleWrapper>
-    <h1>Contacts</h1>
     <Space>
       {!columnsSettings.createdAt && <ColumnsSettingsSwitch/>}
       <Button onClick={updateContacts}><CloudDownloadOutlined/></Button>

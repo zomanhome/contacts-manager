@@ -1,13 +1,19 @@
-import {action, observable} from "mobx"
+import {makeAutoObservable, observable, action} from "mobx"
+import http from "@badm/react-store/lib/http"
 
 class AppStore {
-  @observable
-  _isLoggedIn = false
+  @observable isLoggedIn = false
+
+  constructor() {
+    makeAutoObservable(this)
+  }
+
+  get isLoggedIn() {
+    return this.isLoggedIn
+  }
 
   @action
-  get isLoggedIn() {
-    return this._isLoggedIn
-  }
+  setLoggedIn = value => this.isLoggedIn = value
 }
 
 export default AppStore

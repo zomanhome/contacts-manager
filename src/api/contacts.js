@@ -4,44 +4,10 @@ import http from "@badm/react-store/lib/http"
 http.setBaseUrl(process.env.API_URL)
 
 http.requestInterceptor(options => {
-  // options.useBearerToken("...")
-  options.useResponseFormat("json") // json | text | blob
-  options.useBodyFormatter(request => JSON.stringify(request)) // default value
+  options.useBearerToken(localStorage.getItem("APP_TOKEN") || "")
+  options.useResponseFormat("json")
   options.useHeaders({
     "Content-Type": "application/json",
-  })
-  // можно добавить обработчики для конкретных статусов
-  options.onStatus([401, 403], context => {
-    context.setResult({
-      errors: [
-        {unauthorized: true}
-      ]
-    })
-    context.stopPipe() // останавливает выполнение цепочки (не будет вызван onResponseComplete)
-  })
-
-  // Необходим для того, чтобы дать понять библиотеке успешно выполнился запрос или нет.
-  // setResult принимает объект вида { data, errors }
-  // где оба свойства могут принимать любые значения.
-  // Если будет передано свойство errors, мутация хранилища не будет вызываться.
-  // Также, будет вызван зарегестрированный обработчик ошибок (в setDefaultErrorsHandler)
-  options.onResponseComplete((responseResult, context) => {
-    if (responseResult.error) {
-      context.setResult({
-        errors: [{message: "Request error!"}]
-      })
-      return
-    }
-    context.setResult(responseResult)
-  })
-
-  // Если возникла проблема при подключение к хосту или, к примеру, не удалось распарсить json.
-  // Можно использовать для более точечного логирования, или переопределить ошибку, которая
-  // будет направлена в обработчик установленный setDefaultErrorsHandler-ом.
-  options.onError((type, exception, context) => {
-    if (type === "network") {
-      // some logs, or custom result (context.setErrors())
-    }
   })
 })
 

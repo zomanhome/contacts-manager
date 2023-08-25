@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {Form, Table} from "antd"
+import {Divider, Form, Table} from "antd"
 import {
   addContactRequest,
   deleteContactRequest,
@@ -33,7 +33,6 @@ const ContactsTable = observer(() => {
 
   const [form] = Form.useForm()
   const [editingKey, setEditingKey] = useState("")
-  const isEditing = (record) => record.key === editingKey
 
   function updateContacts(success, errorText) {
     if (success) {

@@ -5,7 +5,7 @@ class ErrorsStore {
   @action
   pushError(errorText) {
     notification.error({
-      message: "Server error",
+      message: "Error",
       description: `${errorText}`,
       placement: "bottomRight",
       duration: 5,
