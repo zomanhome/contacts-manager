@@ -5,21 +5,35 @@ import {observer} from "mobx-react-lite"
 import Layout from "./components/layout"
 import ContactsTable from "./components/contacts/contacts-table"
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
-import {ConfigProvider} from "antd"
+import {ConfigProvider, Switch} from "antd"
 import enUS from "antd/locale/en_US"
 import {themes, algorithm, currentTheme} from "./services/theme-service"
+import {Routes, Navigate, Route, BrowserRouter as Router} from "react-router-dom"
+import {store} from "./store"
+import LoginForm from "./components/auth/login"
 
 const App = observer(() => {
+
+  const {isLoggedIn} = store.get().AppStore
+
   return (
     <ConfigProvider locale={enUS} theme={algorithm()}>
       <ThemeSwitcherProvider themeMap={themes} defaultTheme={currentTheme.get()}>
         <Layout>
-          <Header/>
-          <ContactsTable/>
+          <Router>
+            <Routes>
+
+              {isLoggedIn
+                ? <Route path="/" element={<ContactsTable/>}/>
+                : <Route path="/" element={<LoginForm/>}/>
+              }
+
+            </Routes>
+          </Router>
         </Layout>
       </ThemeSwitcherProvider>
     </ConfigProvider>
-  )
+  );
 })
 
 export default App
