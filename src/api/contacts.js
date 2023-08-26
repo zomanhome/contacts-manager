@@ -1,6 +1,6 @@
 import {store} from "../store"
 import http from "@badm/react-store/lib/http"
-import {runInAction} from "mobx";
+import {runInAction} from "mobx"
 
 http.setBaseUrl(process.env.API_URL)
 

@@ -92,7 +92,6 @@ export default function getTableColumns({editingKey, updateContacts, toggleFavor
     {
       dataIndex: "operation",
       render: (_, record) => {
-        const editable = isEditing(record)
         return <Operations
           record={record}
           editingKey={editingKey}
