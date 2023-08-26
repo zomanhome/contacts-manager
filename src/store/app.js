@@ -3,9 +3,14 @@ import http from "@badm/react-store/lib/http"
 
 class AppStore {
   @observable isLoggedIn = false
+  @observable user = {}
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  get user() {
+    return this.user
   }
 
   get isLoggedIn() {
@@ -14,6 +19,8 @@ class AppStore {
 
   @action
   setLoggedIn = value => this.isLoggedIn = value
+  @action
+  setUser = value => this.user = value
 }
 
 export default AppStore

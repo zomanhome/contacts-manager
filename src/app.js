@@ -5,7 +5,7 @@ import {observer} from "mobx-react-lite"
 import Layout from "./components/layout"
 import ContactsTable from "./components/contacts/contacts-table"
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
-import {ConfigProvider, Switch} from "antd"
+import {ConfigProvider} from "antd"
 import enUS from "antd/locale/en_US"
 import {themes, algorithm, currentTheme} from "./services/theme-service"
 import {store} from "./store"

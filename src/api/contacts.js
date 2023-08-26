@@ -1,5 +1,6 @@
 import {store} from "../store"
 import http from "@badm/react-store/lib/http"
+import {runInAction} from "mobx";
 
 http.setBaseUrl(process.env.API_URL)
 
@@ -14,9 +15,12 @@ http.requestInterceptor(options => {
 export const getAllContactsRequest = store.createRequest()
   .fetch(http.get("/api/contacts"))
   .mutateStore((store, response, request, vars) => {
-    const {data} = response
+    const {items: contacts, totalCount} = response.data
 
-    store.ContactsStore.setContacts(data.items)
+    runInAction(() => {
+      store.ContactsStore.setContacts(contacts)
+      store.ContactsStore.setTotalCount(totalCount)
+    })
   })
 
 export const deleteContactRequest = store.createRequest()

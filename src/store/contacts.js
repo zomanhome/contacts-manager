@@ -3,6 +3,17 @@ import {action, observable} from "mobx"
 class ContactsStore {
   @observable
   _contacts = observable.array([])
+  _totalCount = 0
+
+  @action
+  getTotalCount() {
+    return this._totalCount
+  }
+
+  @action
+  setTotalCount(count) {
+    this._totalCount = count
+  }
 
   @action
   getAllContacts() {

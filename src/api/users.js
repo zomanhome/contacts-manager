@@ -1,5 +1,6 @@
 import {store} from "../store"
 import http from "@badm/react-store/lib/http"
+import {runInAction} from "mobx"
 
 http.requestInterceptor(options => {
   options.useBearerToken(localStorage.getItem("APP_TOKEN") || "")
@@ -21,12 +22,14 @@ export const loginRequest = store.createRequest()
       store.AppStore.setLoggedIn(true)
     }
   })
-  .registerErrorsHandler(() => store.get().Errors.pushError("Login failed"))
 
 export const currentRequest = store.createRequest()
   .fetch(http.get("/api/auth/current"))
   .mutateStore((store, data, request, vars) => {
     if (data.success) {
-      store.AppStore.setLoggedIn(true)
+      runInAction(() => {
+        store.AppStore.setUser(data.data)
+        store.AppStore.setLoggedIn(true)
+      })
     }
   })

@@ -1,17 +1,25 @@
 import React from "react"
 import {observer} from "mobx-react-lite"
-import {Button, Form, Input, Spin} from "antd"
+import {Button, Form, Input} from "antd"
 import {LockOutlined, MailOutlined} from "@ant-design/icons"
 import {loginRequest} from "../../api/users"
+import {store} from "../../store"
 
 const LoginForm = observer(() => {
   const [form] = Form.useForm()
   const [login, isInFly] = loginRequest.useLocal()
+  const {Errors} = store.get()
 
   const onFinish = async (values) => {
     const {email, password} = values
 
-    await login({email, password})
+    const response = await login({email, password})
+
+    if (response.data.success) {
+      // TODO go to restricted routes
+    } else {
+      Errors.pushError(response.data.message)
+    }
   }
 
   return (
@@ -21,7 +29,7 @@ const LoginForm = observer(() => {
       wrapperCol={{span: 16}}
       style={{maxWidth: 600}}
       onFinish={onFinish}
-      // autoComplete="off"
+      autoComplete="off"
       validateTrigger="onSubmit"
     >
       <Form.Item

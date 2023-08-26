@@ -13,20 +13,20 @@ const RegisterForm = observer(({setActiveKey}) => {
     const {name, email, password} = values
     const {Errors} = store.get()
 
-    const {success, message} = await register({name, email, password})
+    const response = await register({name, email, password})
 
-    if (success) {
+    if (response.data.success) {
       form.resetFields()
       setActiveKey("1")
 
       notification.success({
         message: "Please login.",
-        description: `${message}`,
+        description: `${response.data.message}`,
         placement: "bottomRight",
         duration: 5,
       })
     } else {
-      Errors.pushError(message)
+      Errors.pushError(response.data.message)
     }
   }
 
@@ -37,7 +37,7 @@ const RegisterForm = observer(({setActiveKey}) => {
       wrapperCol={{span: 16}}
       style={{maxWidth: 600}}
       onFinish={onFinish}
-      // autoComplete="off"
+      autoComplete="off"
       validateTrigger="onSubmit"
     >
       <Form.Item

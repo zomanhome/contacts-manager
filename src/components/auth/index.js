@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react"
-import {Spin, Tabs} from "antd"
+import React, {useState} from "react"
+import {Tabs} from "antd"
 import LoginForm from "./login"
 import RegisterForm from "./register"
 import styled from "styled-components"
-import {currentRequest} from "../../api/users"
 
 const TabsWrapper = styled.div`
   display: flex;
