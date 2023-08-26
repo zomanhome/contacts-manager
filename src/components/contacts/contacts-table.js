@@ -47,6 +47,16 @@ const ContactsTable = observer(() => {
     tableParams.pagination = pagination
   }
 
+  const updateContacts = () => {
+    getAllContacts({
+      page: tableParams.pagination.current,
+      limit: tableParams.pagination.pageSize,
+    }).then(() => {
+      tableParams.pagination.total = ContactsStore.getTotalCount()
+      setEditingKey("")
+    })
+  }
+
   const edit = (record) => {
     form.setFieldsValue(record)
     setEditingKey(record.key)
@@ -67,29 +77,29 @@ const ContactsTable = observer(() => {
           name,
           email,
           phone,
-        }).then(() => {
-          setEditingKey("")
-        })
+        }).then(() => updateContacts())
       } else {
         editContact({
           key: record.key, // TODO: dirty fields only
           name,
           email,
           phone,
-        }).then(({success, data, message}) => {
-          setEditingKey("")
-          getAllContacts({
-            page: tableParams.pagination.current,
-            limit: tableParams.pagination.pageSize,
-          })
-        })
+        }).then(() => updateContacts())
       }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo)
     }
   }
   const remove = (record) => {
-    deleteContact({id: record.key}).then()
+    deleteContact({id: record.key}).then(() => {
+      const {current, pageSize, total} = tableParams.pagination
+
+      if ((current - 1) * pageSize + 1 === total) {
+        tableParams.pagination.current--
+      }
+
+      updateContacts()
+    })
   }
   const add = () => {
     const key = `_new${Math.random()}`
@@ -104,15 +114,11 @@ const ContactsTable = observer(() => {
     setEditingKey(key)
 
     ContactsStore.addNewContact({...record, key})
+    ContactsStore.setTotalCount(ContactsStore.getTotalCount() + 1)
   }
 
   useEffect(() => {
-    getAllContacts({
-      page: tableParams.pagination.current,
-      limit: tableParams.pagination.pageSize,
-    }).then(result => {
-      tableParams.pagination.total = ContactsStore.getTotalCount()
-    })
+    updateContacts()
   }, [tableParams.pagination])
 
   return (
@@ -126,17 +132,14 @@ const ContactsTable = observer(() => {
         }}
         title={() => <Title
           isEditing={editingKey !== ""}
-          updateContacts={() => getAllContacts({
-            page: tableParams.pagination.current,
-            limit: tableParams.pagination.pageSize,
-          })}
+          updateContacts={updateContacts}
           addContact={add}
         />}
         dataSource={toJS(contacts)}
         pagination={tableParams.pagination}
         onChange={handleTableChange}
         loading={isInFly}
-        columns={getTableColumns({editingKey, tableParams, getAllContacts, toggleFavorite, save, cancel, edit, remove})}
+        columns={getTableColumns({editingKey, updateContacts, toggleFavorite, save, cancel, edit, remove})}
       />
     </Form>
   )
