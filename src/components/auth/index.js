@@ -1,8 +1,9 @@
-import React, {useState} from "react"
-import {Tabs} from "antd"
+import React, {useEffect, useState} from "react"
+import {Spin, Tabs} from "antd"
 import LoginForm from "./login"
 import RegisterForm from "./register"
 import styled from "styled-components"
+import {currentRequest} from "../../api/users";
 
 const TabsWrapper = styled.div`
   display: flex;
@@ -16,6 +17,13 @@ const AuthTabs = styled(Tabs)`
 
 const LoginRegister = () => {
   const [activeKey, setActiveKey] = useState("1")
+  const [current, isInFly] = currentRequest.useLocal({initialStateIsFly: true})
+
+  useEffect(() => {
+    current().then()
+  }, [current])
+
+  if (isInFly) return <Spin/>
 
   return (
     <TabsWrapper>

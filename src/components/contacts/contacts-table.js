@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {Divider, Form, Table} from "antd"
+import {Form, Table} from "antd"
 import {
   addContactRequest,
   deleteContactRequest,
@@ -110,7 +110,6 @@ const ContactsTable = observer(() => {
         dataSource={toJS(contacts)}
         loading={isInFly}
         columns={getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove})}
-        pagination={false}
       />
     </Form>
   )

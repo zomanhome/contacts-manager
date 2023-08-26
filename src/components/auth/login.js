@@ -15,9 +15,7 @@ const LoginForm = observer(() => {
 
     const response = await login({email, password})
 
-    if (response.data.success) {
-      // TODO go to restricted routes
-    } else {
+    if (!response.data.success) {
       Errors.pushError(response.data.message)
     }
   }

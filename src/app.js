@@ -20,12 +20,14 @@ const App = observer(() => {
       <ThemeSwitcherProvider themeMap={themes} defaultTheme={currentTheme.get()}>
         <Layout>
           <Header/>
-          <LoginRegister/>
-          <ContactsTable/>
+          {isLoggedIn
+            ? <ContactsTable/>
+            : <LoginRegister/>
+          }
         </Layout>
       </ThemeSwitcherProvider>
     </ConfigProvider>
-  );
+  )
 })
 
 export default App

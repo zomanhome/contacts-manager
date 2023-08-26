@@ -20,6 +20,7 @@ export const loginRequest = store.createRequest()
     if (data.success) {
       localStorage.setItem("APP_TOKEN", data.data.token)
       store.AppStore.setLoggedIn(true)
+      currentRequest.getExecutor().execute().then()
     }
   })
 
