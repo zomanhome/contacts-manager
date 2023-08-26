@@ -42,9 +42,10 @@ export default function getTableColumns({editingKey, toggleFavorite, save, cance
       },
       dataIndex: "name",
       editable: true,
-      sorter: (a, b) => b.name.length - a.name.length,
-      sortDirections: ["ascend", "descend"],
-      display: true,
+      // TODO: sort on server
+      // sorter: (a, b) => b.name.length - a.name.length,
+      // sortDirections: ["ascend", "descend"],
+      // display: true,
     },
     {
       title: "Email",

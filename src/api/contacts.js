@@ -13,7 +13,7 @@ http.requestInterceptor(options => {
 })
 
 export const getAllContactsRequest = store.createRequest()
-  .fetch(http.get("/api/contacts"))
+  .fetch(http.get(({request: {page, limit}}) => `/api/contacts?page=${page}&limit=${limit}`))
   .mutateStore((store, response, request, vars) => {
     const {items: contacts, totalCount} = response.data
 

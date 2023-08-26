@@ -9,13 +9,13 @@ import {
 } from "../../api/contacts"
 import {store} from "../../store"
 import {observer} from "mobx-react-lite"
-import {toJS} from "mobx"
+import {observable, toJS} from "mobx"
 import Title from "./helpers/title"
 import {EditableCell} from "./helpers/editable-components"
 import getTableColumns from "./helpers/columns"
 
 const ContactsTable = observer(() => {
-  const {ContactsStore, Errors} = store.get()
+  const {ContactsStore} = store.get()
   const contacts = ContactsStore.getAllContacts()
 
   const [getAllContacts, getAllContactsFly] = getAllContactsRequest.useLocal()
@@ -33,6 +33,19 @@ const ContactsTable = observer(() => {
 
   const [form] = Form.useForm()
   const [editingKey, setEditingKey] = useState("")
+  const [tableParams] = useState(() =>
+    observable({
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        // showSizeChanger: true,
+      }
+    }))
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    console.log(pagination, filters, sorter) // TODO: add filters and sorter here
+    tableParams.pagination = pagination
+  }
 
   const edit = (record) => {
     form.setFieldsValue(record)
@@ -90,8 +103,13 @@ const ContactsTable = observer(() => {
   }
 
   useEffect(() => {
-    getAllContacts().then()
-  }, [contacts])
+    getAllContacts({
+      page: tableParams.pagination.current,
+      limit: tableParams.pagination.pageSize,
+    }).then(result => {
+      tableParams.pagination.total = ContactsStore.getTotalCount()
+    })
+  }, [tableParams.pagination])
 
   return (
     <Form form={form} component={false}>
@@ -108,6 +126,8 @@ const ContactsTable = observer(() => {
           addContact={add}
         />}
         dataSource={toJS(contacts)}
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
         loading={isInFly}
         columns={getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove})}
       />
