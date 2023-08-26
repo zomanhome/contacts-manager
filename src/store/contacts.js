@@ -2,7 +2,7 @@ import {action, observable} from "mobx"
 
 class ContactsStore {
   @observable
-  _contacts = observable.array([])
+  _contacts = observable.array([], {deep: true})
   _totalCount = 0
 
   @action

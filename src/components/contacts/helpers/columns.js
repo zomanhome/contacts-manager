@@ -29,7 +29,7 @@ export const ColumnsSettingsSwitch = ({params}) => {
     </span>)
 }
 
-export default function getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove}) {
+export default function getTableColumns({editingKey, tableParams, getAllContacts, toggleFavorite, save, cancel, edit, remove}) {
   const isEditing = (record) => record.key === editingKey
 
   const columns = [
@@ -45,7 +45,7 @@ export default function getTableColumns({editingKey, toggleFavorite, save, cance
       // TODO: sort on server
       // sorter: (a, b) => b.name.length - a.name.length,
       // sortDirections: ["ascend", "descend"],
-      // display: true,
+      display: true,
     },
     {
       title: "Email",
@@ -68,6 +68,8 @@ export default function getTableColumns({editingKey, toggleFavorite, save, cance
           : <Favorite
             record={record}
             toggleFavorite={toggleFavorite}
+            tableParams={tableParams}
+            getAllContacts={getAllContacts}
           />,
       filters: [
         {

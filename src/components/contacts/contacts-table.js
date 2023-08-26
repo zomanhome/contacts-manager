@@ -38,12 +38,12 @@ const ContactsTable = observer(() => {
       pagination: {
         current: 1,
         pageSize: 10,
-        // showSizeChanger: true,
+        showSizeChanger: true,
       }
     }))
 
   const handleTableChange = (pagination, filters, sorter) => {
-    console.log(pagination, filters, sorter) // TODO: add filters and sorter here
+    // console.log(pagination, filters, sorter) // TODO: add filters and sorter here
     tableParams.pagination = pagination
   }
 
@@ -78,6 +78,10 @@ const ContactsTable = observer(() => {
           phone,
         }).then(({success, data, message}) => {
           setEditingKey("")
+          getAllContacts({
+            page: tableParams.pagination.current,
+            limit: tableParams.pagination.pageSize,
+          })
         })
       }
     } catch (errInfo) {
@@ -122,14 +126,17 @@ const ContactsTable = observer(() => {
         }}
         title={() => <Title
           isEditing={editingKey !== ""}
-          updateContacts={() => getAllContacts()}
+          updateContacts={() => getAllContacts({
+            page: tableParams.pagination.current,
+            limit: tableParams.pagination.pageSize,
+          })}
           addContact={add}
         />}
         dataSource={toJS(contacts)}
         pagination={tableParams.pagination}
         onChange={handleTableChange}
         loading={isInFly}
-        columns={getTableColumns({editingKey, toggleFavorite, save, cancel, edit, remove})}
+        columns={getTableColumns({editingKey, tableParams, getAllContacts, toggleFavorite, save, cancel, edit, remove})}
       />
     </Form>
   )

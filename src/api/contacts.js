@@ -13,7 +13,7 @@ http.requestInterceptor(options => {
 })
 
 export const getAllContactsRequest = store.createRequest()
-  .fetch(http.get(({request: {page, limit}}) => `/api/contacts?page=${page}&limit=${limit}`))
+  .fetch(http.get(({request: {page = 1, limit = 10}}) => `/api/contacts?page=${page}&limit=${limit}`))
   .mutateStore((store, response, request, vars) => {
     const {items: contacts, totalCount} = response.data
 
@@ -37,12 +37,8 @@ export const addContactRequest = store.createRequest()
 
 export const editContactRequest = store.createRequest()
   .fetch(http.put(({request: {key}}) => `/api/contacts/${key}`))
-  .mutateStore((store, data, request, vars) => {
-    getAllContactsRequest.getExecutor().execute().then()
-  })
+  .immutable()
 
 export const toggleFavoriteRequest = store.createRequest()
   .fetch(http.patch(({request: {key}}) => `/api/contacts/${key}/favorite`))
-  .mutateStore((store, data, request, vars) => {
-    getAllContactsRequest.getExecutor().execute().then()
-  })
+  .immutable()
