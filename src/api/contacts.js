@@ -25,9 +25,7 @@ export const getAllContactsRequest = store.createRequest()
 
 export const deleteContactRequest = store.createRequest()
   .fetch(http.delete(({request: {id}}) => `/api/contacts/${id}`))
-  .mutateStore((store, data, request, vars) => {
-    getAllContactsRequest.getExecutor().execute().then()
-  })
+  .immutable()
 
 export const addContactRequest = store.createRequest()
   .fetch(http.post("/api/contacts"))
