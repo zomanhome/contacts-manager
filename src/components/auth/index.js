@@ -18,13 +18,6 @@ const AuthTabs = styled(Tabs)`
 const LoginRegister = () => {
   const [activeKey, setActiveKey] = useState("1")
 
-  const [current, isInFly] = currentRequest.useLocal()
-
-
-  useEffect(() => {
-    current()
-  }, [])
-
   return (
     <TabsWrapper>
       <AuthTabs

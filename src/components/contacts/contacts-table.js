@@ -34,15 +34,6 @@ const ContactsTable = observer(() => {
   const [form] = Form.useForm()
   const [editingKey, setEditingKey] = useState("")
 
-  function updateContacts(success, errorText) {
-    if (success) {
-      setEditingKey("")
-      getAllContacts().then()
-    } else {
-      Errors.pushError(errorText)
-    }
-  }
-
   const edit = (record) => {
     form.setFieldsValue(record)
     setEditingKey(record.key)
@@ -63,8 +54,8 @@ const ContactsTable = observer(() => {
           name,
           email,
           phone,
-        }).then(({success, message}) => {
-          updateContacts(success, message)
+        }).then(() => {
+          setEditingKey("")
         })
       } else {
         editContact({
@@ -73,7 +64,7 @@ const ContactsTable = observer(() => {
           email,
           phone,
         }).then(({success, data, message}) => {
-          updateContacts(success, message)
+          setEditingKey("")
         })
       }
     } catch (errInfo) {
@@ -100,7 +91,7 @@ const ContactsTable = observer(() => {
 
   useEffect(() => {
     getAllContacts().then()
-  }, [])
+  }, [contacts])
 
   return (
     <Form form={form} component={false}>

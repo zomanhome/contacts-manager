@@ -8,7 +8,6 @@ import {ThemeSwitcherProvider} from 'react-css-theme-switcher'
 import {ConfigProvider, Switch} from "antd"
 import enUS from "antd/locale/en_US"
 import {themes, algorithm, currentTheme} from "./services/theme-service"
-import {Routes, Navigate, Route, BrowserRouter as Router} from "react-router-dom"
 import {store} from "./store"
 import LoginRegister from "./components/auth"
 
@@ -21,14 +20,8 @@ const App = observer(() => {
       <ThemeSwitcherProvider themeMap={themes} defaultTheme={currentTheme.get()}>
         <Layout>
           <Header/>
-          <Router>
-            <Routes>
-              {isLoggedIn
-                ? <Route path="/" element={<ContactsTable/>}/>
-                : <Route path="/" element={<LoginRegister/>}/>
-              }
-            </Routes>
-          </Router>
+          <LoginRegister/>
+          <ContactsTable/>
         </Layout>
       </ThemeSwitcherProvider>
     </ConfigProvider>

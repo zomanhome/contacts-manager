@@ -13,8 +13,10 @@ http.requestInterceptor(options => {
 
 export const getAllContactsRequest = store.createRequest()
   .fetch(http.get("/api/contacts"))
-  .mutateStore((store, data, request, vars) => {
-    store.ContactsStore.setContacts(data)
+  .mutateStore((store, response, request, vars) => {
+    const {data} = response
+
+    store.ContactsStore.setContacts(data.items)
   })
 
 export const deleteContactRequest = store.createRequest()
@@ -25,11 +27,15 @@ export const deleteContactRequest = store.createRequest()
 
 export const addContactRequest = store.createRequest()
   .fetch(http.post("/api/contacts"))
-  .immutable()
+  .mutateStore((store, data, request, vars) => {
+    getAllContactsRequest.getExecutor().execute().then()
+  })
 
 export const editContactRequest = store.createRequest()
   .fetch(http.put(({request: {key}}) => `/api/contacts/${key}`))
-  .immutable()
+  .mutateStore((store, data, request, vars) => {
+    getAllContactsRequest.getExecutor().execute().then()
+  })
 
 export const toggleFavoriteRequest = store.createRequest()
   .fetch(http.patch(({request: {key}}) => `/api/contacts/${key}/favorite`))
