@@ -16,7 +16,7 @@ const AuthTabs = styled(Tabs)`
 `
 
 const LoginRegister = () => {
-  const [activeKey, setActiveKey] = useState("1")
+  const [activeKey, setActiveKey] = useState("login")
   const [current, isInFly] = currentRequest.useLocal({initialStateIsFly: true})
 
   useEffect(() => {
@@ -35,15 +35,15 @@ const LoginRegister = () => {
         items={[
           {
             label: "Login",
-            key: "1",
+            key: "login",
             children: <LoginForm/>,
-            onClick: () => setActiveKey("1"),
+            onClick: () => setActiveKey("login"),
           },
           {
             label: "Register",
-            key: "2",
+            key: "register",
             children: <RegisterForm setActiveKey={setActiveKey}/>,
-            onClick: () => setActiveKey("2"),
+            onClick: () => setActiveKey("register"),
           },
         ]}
       />

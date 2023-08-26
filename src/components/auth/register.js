@@ -17,7 +17,7 @@ const RegisterForm = observer(({setActiveKey}) => {
 
     if (response.data.success) {
       form.resetFields()
-      setActiveKey("1")
+      setActiveKey("login")
 
       notification.success({
         message: "Please login.",
