@@ -54,6 +54,7 @@ const ContactsTable = observer(() => {
       tableParams.pagination = {
         current: 1,
         pageSize: 10,
+        showSizeChanger: true,
       }
     })
 
