@@ -3,11 +3,11 @@ import moment from "moment/moment"
 import Operations from "./operations"
 import React, {useEffect} from "react"
 import {observable} from "mobx"
-import {Switch} from "antd"
+import {Checkbox, Switch} from "antd"
 
 export const columnsSettings = observable({
-  createdAt: true,
-  sortOrder: "descend",
+  createdAt: false,
+  sortOrder: "",
 })
 
 export const ColumnsSettingsSwitch = ({params}) => {
@@ -19,14 +19,13 @@ export const ColumnsSettingsSwitch = ({params}) => {
   }, [params])
 
   return (
-    <span onClick={e => e.stopPropagation()}>
-      <Switch
-        checked={columnsSettings.createdAt}
-        onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
-        checkedChildren="Created"
-        unCheckedChildren={columnsSettings.sortOrder ? "Created ▼" : "Created"}
-      />
-    </span>)
+    <Switch
+      checked={columnsSettings.createdAt}
+      onChange={() => columnsSettings.createdAt = !columnsSettings.createdAt}
+      checkedChildren="Created"
+      unCheckedChildren={columnsSettings.sortOrder ? "Created ▼" : "Created"}
+    />
+  )
 }
 
 export default function getTableColumns({editingKey, updateContacts, toggleFavorite, save, cancel, edit, remove}) {
@@ -60,7 +59,13 @@ export default function getTableColumns({editingKey, updateContacts, toggleFavor
       display: true,
     },
     {
-      title: "Favorite",
+      title: () =>
+        <Checkbox
+          // style={{verticalAlign: "middle"}}
+          // checked={true}
+        >
+          Favorite
+        </Checkbox>,
       dataIndex: "favorite",
       render: (_, record) =>
         /^_new\d+/.test(record.key) || isEditing(record)
@@ -83,10 +88,10 @@ export default function getTableColumns({editingKey, updateContacts, toggleFavor
       title: params => <ColumnsSettingsSwitch params={params}/>,
       dataIndex: "createdAt",
       render: createdAt => moment(createdAt).format("DD MMM YYYY HH:mm"),
-      sorter: (a, b) =>
-        moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
-      sortDirections: ["descend"],
-      defaultSortOrder: "descend",
+      // sorter: (a, b) =>
+      //   moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
+      // sortDirections: ["descend"],
+      // defaultSortOrder: "descend",
       display: columnsSettings.createdAt,
     },
     {
