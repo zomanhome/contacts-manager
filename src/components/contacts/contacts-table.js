@@ -9,7 +9,7 @@ import {
 } from "../../api/contacts"
 import {store} from "../../store"
 import {observer} from "mobx-react-lite"
-import {observable, toJS} from "mobx"
+import {observable, runInAction, toJS} from "mobx"
 import Title from "./helpers/title"
 import {EditableCell} from "./helpers/editable-components"
 import getTableColumns from "./helpers/columns"
@@ -35,6 +35,7 @@ const ContactsTable = observer(() => {
   const [editingKey, setEditingKey] = useState("")
   const [tableParams] = useState(() =>
     observable({
+      favorite: false,
       pagination: {
         current: 1,
         pageSize: 10,
@@ -47,10 +48,22 @@ const ContactsTable = observer(() => {
     tableParams.pagination = pagination
   }
 
+  const onChangeFavorite = () => {
+    runInAction(() => {
+      tableParams.favorite = !tableParams.favorite
+      tableParams.pagination = {
+        current: 1,
+        pageSize: 10,
+      }
+    })
+
+  }
+
   const updateContacts = () => {
     getAllContacts({
       page: tableParams.pagination.current,
       limit: tableParams.pagination.pageSize,
+      favorite: tableParams.favorite,
     }).then(() => {
       tableParams.pagination.total = ContactsStore.getTotalCount()
       setEditingKey("")
@@ -119,7 +132,7 @@ const ContactsTable = observer(() => {
 
   useEffect(() => {
     updateContacts()
-  }, [tableParams.pagination])
+  }, [tableParams.pagination, tableParams.favorite])
 
   return (
     <Form form={form} component={false}>
@@ -139,7 +152,16 @@ const ContactsTable = observer(() => {
         pagination={tableParams.pagination}
         onChange={handleTableChange}
         loading={isInFly}
-        columns={getTableColumns({editingKey, updateContacts, toggleFavorite, save, cancel, edit, remove})}
+        columns={getTableColumns({
+          editingKey,
+          onChangeFavorite,
+          updateContacts,
+          toggleFavorite,
+          save,
+          cancel,
+          edit,
+          remove
+        })}
       />
     </Form>
   )

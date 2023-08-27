@@ -13,7 +13,17 @@ http.requestInterceptor(options => {
 })
 
 export const getAllContactsRequest = store.createRequest()
-  .fetch(http.get(({request: {page = 1, limit = 10}}) => `/api/contacts?page=${page}&limit=${limit}`))
+  .fetch(http.get(({
+                     request: {
+                       page = 1,
+                       limit = 10,
+                       favorite
+                     }
+                   }) => {
+    return favorite
+      ? `/api/contacts?page=${page}&limit=${limit}&favorite=${favorite}`
+      : `/api/contacts?page=${page}&limit=${limit}`
+  }))
   .mutateStore((store, response, request, vars) => {
     const {items: contacts, totalCount} = response.data
 

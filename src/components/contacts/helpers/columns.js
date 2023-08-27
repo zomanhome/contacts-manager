@@ -28,7 +28,16 @@ export const ColumnsSettingsSwitch = ({params}) => {
   )
 }
 
-export default function getTableColumns({editingKey, updateContacts, toggleFavorite, save, cancel, edit, remove}) {
+export default function getTableColumns({
+                                          editingKey,
+                                          onChangeFavorite,
+                                          updateContacts,
+                                          toggleFavorite,
+                                          save,
+                                          cancel,
+                                          edit,
+                                          remove
+                                        }) {
   const isEditing = (record) => record.key === editingKey
 
   const columns = [
@@ -61,8 +70,7 @@ export default function getTableColumns({editingKey, updateContacts, toggleFavor
     {
       title: () =>
         <Checkbox
-          // style={{verticalAlign: "middle"}}
-          // checked={true}
+          onChange={onChangeFavorite}
         >
           Favorite
         </Checkbox>,
