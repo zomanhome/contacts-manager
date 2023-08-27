@@ -5,13 +5,14 @@ import React, {useEffect} from "react"
 import {observable} from "mobx"
 import {Checkbox, Switch} from "antd"
 
+// TODO: for all hidden columns
 export const columnsSettings = observable({
   createdAt: false,
   sortOrder: "",
 })
 
+// TODO: refactor this
 export const ColumnsSettingsSwitch = ({params}) => {
-
   useEffect(() => {
     return () => {
       columnsSettings.sortOrder = params?.sortOrder
@@ -42,17 +43,9 @@ export default function getTableColumns({
 
   const columns = [
     {
-      title: params => {
-        if (params?.sortColumn?.dataIndex === "name") {
-          columnsSettings.sortOrder = undefined
-        }
-        return <>Name Surname</>
-      },
+      title: "Name Surname",
       dataIndex: "name",
       editable: true,
-      // TODO: sort on server
-      // sorter: (a, b) => b.name.length - a.name.length,
-      // sortDirections: ["ascend", "descend"],
       display: true,
     },
     {
@@ -68,12 +61,7 @@ export default function getTableColumns({
       display: true,
     },
     {
-      title: () =>
-        <Checkbox
-          onChange={onChangeFavorite}
-        >
-          Favorite
-        </Checkbox>,
+      title: () => <Checkbox onChange={onChangeFavorite}>Favorite</Checkbox>,
       dataIndex: "favorite",
       render: (_, record) =>
         /^_new\d+/.test(record.key) || isEditing(record)
@@ -83,23 +71,12 @@ export default function getTableColumns({
             toggleFavorite={toggleFavorite}
             updateContacts={updateContacts}
           />,
-      // filters: [
-      //   {
-      //     text: "Favorite",
-      //     value: true,
-      //   },
-      // ],
-      // onFilter: (_, record) => record.favorite,
       display: true,
     },
     {
       title: params => <ColumnsSettingsSwitch params={params}/>,
       dataIndex: "createdAt",
       render: createdAt => moment(createdAt).format("DD MMM YYYY HH:mm"),
-      // sorter: (a, b) =>
-      //   moment(a["createdAt"]).format("X") - moment(b["createdAt"]).format("X"),
-      // sortDirections: ["descend"],
-      // defaultSortOrder: "descend",
       display: columnsSettings.createdAt,
     },
     {
@@ -126,7 +103,7 @@ export default function getTableColumns({
 
     return {
       ...col,
-      onCell: (record) => ({
+      onCell: record => ({
         record,
         inputType: col.dataIndex === "text",
         dataIndex: col.dataIndex,
