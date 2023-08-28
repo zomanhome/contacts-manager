@@ -1,17 +1,22 @@
-import React from "react"
+import React, {useTransition} from "react"
 import {Switch} from "antd"
 
 const Favorite = ({record, toggleFavorite, updateContacts}) => {
+  const [isPending, startTransition] = useTransition()
+
   const onChange = () => {
-    toggleFavorite({
-      favorite: !record.favorite,
-      key: record.key,
-    }).then(() => {
-      updateContacts()
+    startTransition(() => {
+      toggleFavorite({
+        favorite: !record.favorite,
+        key: record.key,
+      }).then(() => {
+        updateContacts()
+      })
     })
   }
 
   return <Switch
+    loading={isPending}
     checked={record.favorite}
     checkedChildren="Yes"
     unCheckedChildren="No"
