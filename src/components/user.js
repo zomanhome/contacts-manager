@@ -29,6 +29,7 @@ const User = observer(() => {
       current().then(() => {
         !complete && pushError("Loading error. Try again!")
         setProgress(0)
+        inputFile.current.value = null
       })
     })
   }
