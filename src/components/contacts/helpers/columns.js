@@ -13,11 +13,11 @@ export const columnsSettings = observable({
 
 // TODO: refactor this
 export const ColumnsSettingsSwitch = ({params}) => {
-  useEffect(() => {
-    return () => {
-      columnsSettings.sortOrder = params?.sortOrder
-    }
-  }, [params])
+  // useEffect(() => {
+  //   return () => {
+  //     columnsSettings.sortOrder = params?.sortOrder
+  //   }
+  // }, [params])
 
   return (
     <Switch
