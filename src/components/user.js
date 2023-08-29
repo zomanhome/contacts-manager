@@ -52,9 +52,7 @@ const User = observer(() => {
     },
   ]
 
-  if (!isLoggedIn) {
-    return null
-  }
+  if (!isLoggedIn) return null
 
   return (
     <Space>
