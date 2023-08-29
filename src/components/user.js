@@ -1,13 +1,32 @@
-import React from "react"
+import React, {useRef, useState} from "react"
 import {store} from "../store"
-import {Space, Dropdown, Button, Avatar} from "antd"
+import {Space, Dropdown, Button, Avatar, Progress} from "antd"
 import {DownOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons"
 import {observer} from "mobx-react-lite"
+import uploadFiles from "../services/upload-files"
+import {currentRequest} from "../api/users";
 
 const User = observer(() => {
-
+  const inputFile = useRef(null)
   const {user, setLoggedIn, setUser, isLoggedIn} = store.get().AppStore
-  const {name, avatarURL} = user
+  const {pushError} = store.get().Errors
+  const {id, name, avatarURL} = user
+  const [progress, setProgress] = useState(0)
+  const [current] = currentRequest.useLocal()
+
+  const uploadAvatar = async e => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    const file = e.target.files[0]
+
+    uploadFiles(`${process.env.API_URL}/users/avatars`, file, id, setProgress, complete => {
+      current().then(() => {
+        !complete && pushError("Loading error. Try again!")
+        setProgress(0)
+      })
+    })
+  }
 
   const items = [
     {
@@ -34,15 +53,17 @@ const User = observer(() => {
 
   return (
     <Space>
-      <Avatar
-        style={{cursor: "pointer"}}
-        shape="square"
-        icon={<UserOutlined />}
-        src={avatarURL}
-        onClick={() => {
-          // TODO: changing
-        }}
-      />
+      <input onChange={uploadAvatar} type="file" id="file" ref={inputFile} style={{display: "none"}}/>
+      {progress
+        ? <Progress percent={progress} strokeLinecap="square"/>
+        : <Avatar
+          style={{cursor: "pointer"}}
+          shape="square"
+          icon={<UserOutlined/>}
+          src={avatarURL}
+          onClick={() => inputFile.current.click()}
+        />
+      }
       <Dropdown
         menu={{items}}
       >

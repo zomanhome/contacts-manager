@@ -1,7 +1,7 @@
 import React from "react"
 import ThemeSwitcher from "./theme-switcher"
 import styled from "styled-components"
-import User from "./user";
+import User from "./user"
 
 const TopPanel = styled.div`
   display: flex;

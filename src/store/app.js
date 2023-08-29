@@ -21,6 +21,8 @@ class AppStore {
   setLoggedIn = value => this.isLoggedIn = value
   @action
   setUser = value => this.user = value
+  @action
+  setUserAvatarURL = avatarURL => this.user.avatarURL = avatarURL
 }
 
 export default AppStore
