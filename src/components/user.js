@@ -4,7 +4,12 @@ import {Space, Dropdown, Button, Avatar, Progress} from "antd"
 import {DownOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons"
 import {observer} from "mobx-react-lite"
 import uploadFiles from "../services/upload-files"
-import {currentRequest} from "../api/users";
+import {currentRequest} from "../api/users"
+import styled from "styled-components"
+
+const AvatarProgress = styled.div`
+  font-size: 10px;
+`
 
 const User = observer(() => {
   const inputFile = useRef(null)
@@ -55,11 +60,16 @@ const User = observer(() => {
     <Space>
       <input onChange={uploadAvatar} type="file" id="file" ref={inputFile} style={{display: "none"}}/>
       {progress
-        ? <Progress percent={progress} strokeLinecap="square"/>
+        ? <Progress
+          className="ant-avatar ant-avatar-square ant-avatar-image"
+          style={{lineHeight: "30px"}}
+          percent={progress}
+          strokeLinecap="square"
+          format={percent => <AvatarProgress>{`${percent}%`}</AvatarProgress>}
+        />
         : <Avatar
           style={{cursor: "pointer"}}
           shape="square"
-          icon={<UserOutlined/>}
           src={avatarURL}
           onClick={() => inputFile.current.click()}
         />
