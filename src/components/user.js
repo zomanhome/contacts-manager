@@ -1,16 +1,17 @@
 import React from "react"
 import {store} from "../store"
-import {Space, Dropdown, Button} from "antd"
-import {DownOutlined, LogoutOutlined} from "@ant-design/icons"
+import {Space, Dropdown, Button, Avatar} from "antd"
+import {DownOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons"
 import {observer} from "mobx-react-lite"
 
 const User = observer(() => {
 
   const {user, setLoggedIn, setUser, isLoggedIn} = store.get().AppStore
+  const {name, avatarURL} = user
 
   const items = [
     {
-      key: "1",
+      key: "user",
       label: (
         <Button
           type="link"
@@ -32,18 +33,27 @@ const User = observer(() => {
   }
 
   return (
-    <Dropdown
-      menu={{
-        items,
-      }}
-    >
-      <a onClick={(e) => e.preventDefault()}>
-        <Space>
-          {user.name}
-          <DownOutlined/>
-        </Space>
-      </a>
-    </Dropdown>
+    <Space>
+      <Avatar
+        style={{cursor: "pointer"}}
+        shape="square"
+        icon={<UserOutlined />}
+        src={avatarURL}
+        onClick={() => {
+          // TODO: changing
+        }}
+      />
+      <Dropdown
+        menu={{items}}
+      >
+        <a onClick={(e) => e.preventDefault()}>
+          <Space>
+            {name}
+            <DownOutlined/>
+          </Space>
+        </a>
+      </Dropdown>
+    </Space>
   )
 })
 
