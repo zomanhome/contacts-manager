@@ -39,7 +39,6 @@ const RegisterForm = observer(({setActiveKey}) => {
       onFinish={onFinish}
       autoComplete="off"
       validateTrigger="onSubmit"
-      initialValues={{email: "zomanhome@gmail.com", password: "Windows1!", confirm: "Windows1!", name: "A S"}}
     >
       <Form.Item
         name="name"

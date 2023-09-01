@@ -31,15 +31,15 @@ const LoginRegister = () => {
     isVerifyBody && verify(verifyBody).then(({data}) => {
       if (data.success) {
         notification.success({
-          message: "Now you can login",
-          description: "Good luck",
+          message: "Success",
+          description: "Now you can login",
           placement: "bottomRight",
           duration: 5,
         })
       } else {
         notification.error({
-          message: "Not valid data",
-          description: "Please check your data",
+          message: "Error",
+          description: "Incorrect data",
           placement: "bottomRight",
           duration: 5,
         })
