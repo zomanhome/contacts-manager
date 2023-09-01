@@ -11,7 +11,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 module.exports = {
   entry: "./src/index.js",
   output: {
-    filename: "main.js",
+    filename: "./main.js",
     path: path.resolve(__dirname, "build")
   },
   mode: "development",
@@ -44,10 +44,8 @@ module.exports = {
       ]
     }),
     new DefinePlugin({
-      "process.env":{
-        "NODE_ENV": JSON.stringify("production"),
-        "API_URL": JSON.stringify("https://contacts-manager-08of.onrender.com")
-      }
+      "process.env.NODE_ENV": JSON.stringify("production"),
+      "process.env.API_URL": JSON.stringify("https://contacts-manager-08of.onrender.com"),
     }),
   ]
 }

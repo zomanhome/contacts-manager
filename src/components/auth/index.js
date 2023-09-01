@@ -52,7 +52,6 @@ const LoginRegister = () => {
   return (
     <TabsWrapper>
       <AuthTabs
-        destroyInactiveTabPane={true}
         onChange={key => setActiveKey(key)}
         activeKey={activeKey}
         type="card"

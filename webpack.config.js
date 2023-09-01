@@ -11,7 +11,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 module.exports = {
   entry: "./src/index.js",
   output: {
-    filename: "main.js",
+    filename: "./main.js",
     path: path.resolve(__dirname, "build")
   },
   mode: "development",
@@ -44,10 +44,8 @@ module.exports = {
       ]
     }),
     new DefinePlugin({
-      "process.env": {
-        "NODE_ENV": JSON.stringify("development"),
-        "API_URL": JSON.stringify("http://127.0.0.1:3000")
-      }
+      "process.env.NODE_ENV": JSON.stringify("development"),
+      "process.env.API_URL": JSON.stringify("http://127.0.0.1:3000"),
     }),
   ]
 }
