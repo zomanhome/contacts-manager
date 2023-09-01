@@ -44,7 +44,7 @@ const LoginRegister = () => {
           duration: 5,
         })
       }
-    }).finally(() => navigate(process.env.NODE_ENV === "production" ? "/contacts-manager" : "/"))
+    }).finally(() => navigate("/contacts-manager"))
   }, [])
 
   if (isInFly || isVerifyInFly) return <Spin/>
