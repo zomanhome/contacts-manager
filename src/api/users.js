@@ -14,6 +14,10 @@ export const registerRequest = store.createRequest()
   .fetch(http.post("/api/auth/register"))
   .immutable()
 
+export const verifyRequest = store.createRequest()
+  .fetch(http.post("/api/auth/verify"))
+  .immutable()
+
 export const loginRequest = store.createRequest()
   .fetch(http.post("/api/auth/login"))
   .mutateStore((store, data, request, vars) => {

@@ -10,6 +10,7 @@ import enUS from "antd/locale/en_US"
 import {themes, algorithm, currentTheme} from "./services/theme-service"
 import {store} from "./store"
 import LoginRegister from "./components/auth"
+import {Routes, Route, BrowserRouter} from "react-router-dom"
 
 const App = observer(() => {
 
@@ -18,13 +19,17 @@ const App = observer(() => {
   return (
     <ConfigProvider locale={enUS} theme={algorithm()}>
       <ThemeSwitcherProvider themeMap={themes} defaultTheme={currentTheme.get()}>
-        <Layout>
-          <Header/>
-          {isLoggedIn
-            ? <ContactsTable/>
-            : <LoginRegister/>
-          }
-        </Layout>
+        <BrowserRouter>
+          <Layout>
+            <Header/>
+            <Routes>
+              <Route path="/" element={isLoggedIn
+                ? <ContactsTable/>
+                : <LoginRegister/>
+              }/>
+            </Routes>
+          </Layout>
+        </BrowserRouter>
       </ThemeSwitcherProvider>
     </ConfigProvider>
   )
