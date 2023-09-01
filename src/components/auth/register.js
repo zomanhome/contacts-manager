@@ -37,7 +37,6 @@ const RegisterForm = observer(({setActiveKey}) => {
       wrapperCol={{span: 16}}
       style={{maxWidth: 600}}
       onFinish={onFinish}
-      autoComplete="off"
       validateTrigger="onSubmit"
     >
       <Form.Item
