@@ -14,7 +14,7 @@ module.exports = {
     filename: "./main.js",
     path: path.resolve(__dirname, "build")
   },
-  mode: "development",
+  mode: "production",
   module: {
     rules: [{
       test: /\.js$/,

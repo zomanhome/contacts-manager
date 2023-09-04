@@ -23,10 +23,11 @@ const App = observer(() => {
           <Layout>
             <Header/>
             <Routes>
-              <Route path="*" element={isLoggedIn
+              <Route path="/" element={isLoggedIn
                 ? <ContactsTable/>
                 : <LoginRegister/>
-              }/>
+              }>
+              </Route>
             </Routes>
           </Layout>
         </BrowserRouter>

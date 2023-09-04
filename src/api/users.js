@@ -15,7 +15,11 @@ export const registerRequest = store.createRequest()
   .immutable()
 
 export const verifyRequest = store.createRequest()
-  .fetch(http.post("/api/auth/verify"))
+  .fetch(http.get(({variables: verificationToken}) => `/api/auth/verify/${verificationToken}`))
+  .immutable()
+
+export const sendVerifyEmailRequest = store.createRequest()
+  .fetch(http.post(({request: {email}}) => `/api/auth/verify`))
   .immutable()
 
 export const loginRequest = store.createRequest()

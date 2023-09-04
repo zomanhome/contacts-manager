@@ -5,6 +5,7 @@ import RegisterForm from "./register"
 import styled from "styled-components"
 import {currentRequest, verifyRequest} from "../../api/users"
 import {useNavigate, useSearchParams} from "react-router-dom"
+import VerifyForm from "./verify";
 
 const TabsWrapper = styled.div`
   display: flex;
@@ -19,16 +20,15 @@ const AuthTabs = styled(Tabs)`
 const LoginRegister = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const verifyBody = {email: searchParams.get("email"), key: searchParams.get("key")}
-  const isVerifyBody = verifyBody.key && verifyBody.email
+  const verificationToken = searchParams.get("verificationToken")
 
   const [activeKey, setActiveKey] = useState("login")
-  const [current, isInFly] = currentRequest.useLocal({initialStateIsFly: !isVerifyBody})
+  const [current, isInFly] = currentRequest.useLocal({initialStateIsFly: !verificationToken})
   const [verify, isVerifyInFly] = verifyRequest.useLocal()
 
   useEffect(() => {
-    !isVerifyBody && current().then()
-    isVerifyBody && verify(verifyBody).then(({data}) => {
+    !verificationToken && current().then()
+    verificationToken && verify({}, {variables: verificationToken}).then(({data}) => {
       if (data.success) {
         notification.success({
           message: "Success",
@@ -39,12 +39,15 @@ const LoginRegister = () => {
       } else {
         notification.error({
           message: "Error",
-          description: "Incorrect data",
+          description: "Incorrect token",
           placement: "bottomRight",
           duration: 5,
         })
       }
-    }).finally(() => navigate("/contacts-manager"))
+    })
+    .finally(() => process.env.NODE_ENV === "development"
+    ? navigate("/")
+    : navigate("/contacts-manager"))
   }, [])
 
   if (isInFly || isVerifyInFly) return <Spin/>
@@ -67,6 +70,12 @@ const LoginRegister = () => {
             key: "register",
             children: <RegisterForm setActiveKey={setActiveKey}/>,
             onClick: () => setActiveKey("register"),
+          },
+          {
+            label: "Verification",
+            key: "verify",
+            children: <VerifyForm setActiveKey={setActiveKey}/>,
+            onClick: () => setActiveKey("verify"),
           },
         ]}
       />
