@@ -11,6 +11,7 @@ import {themes, algorithm, currentTheme} from "./services/theme-service"
 import {store} from "./store"
 import LoginRegister from "./components/auth"
 import {Routes, Route, BrowserRouter} from "react-router-dom"
+import Help from "./components/help"
 
 const App = observer(() => {
 
@@ -22,12 +23,12 @@ const App = observer(() => {
         <BrowserRouter>
           <Layout>
             <Header/>
+            <Help/>
             <Routes>
-              <Route path="/" element={isLoggedIn
+              <Route path="*" element={isLoggedIn
                 ? <ContactsTable/>
                 : <LoginRegister/>
-              }>
-              </Route>
+              }/>
             </Routes>
           </Layout>
         </BrowserRouter>
