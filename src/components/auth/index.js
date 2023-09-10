@@ -5,7 +5,8 @@ import RegisterForm from "./register"
 import styled from "styled-components"
 import {currentRequest, verifyRequest} from "../../api/users"
 import {useNavigate, useSearchParams} from "react-router-dom"
-import VerifyForm from "./verify";
+import VerifyForm from "./verify"
+import {WebSocketDemo} from "../../services/ws"
 
 const TabsWrapper = styled.div`
   display: flex;
@@ -45,9 +46,9 @@ const LoginRegister = () => {
         })
       }
     })
-    .finally(() => process.env.NODE_ENV === "development"
-    ? navigate("/")
-    : navigate("/contacts-manager"))
+      .finally(() => process.env.NODE_ENV === "development"
+        ? navigate("/")
+        : navigate("/contacts-manager"))
   }, [])
 
   if (isInFly || isVerifyInFly) return <Spin/>
@@ -75,7 +76,15 @@ const LoginRegister = () => {
             label: "Verification",
             key: "verify",
             children: <VerifyForm setActiveKey={setActiveKey}/>,
-            onClick: () => setActiveKey("verify"),
+            onClick: () => setActiveKey("verify")
+          },
+          {
+            label: "Chat",
+            key: "chat",
+            children: <WebSocketDemo/>,
+            onClick: () => {
+              setActiveKey("chat")
+            },
           },
         ]}
       />
