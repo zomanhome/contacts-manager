@@ -1,10 +1,14 @@
-import React, {useState, useCallback, useEffect} from "react"
+import React from "react"
 import io from "socket.io-client"
 import {Button} from "antd"
-import {observable} from "mobx";
+import {observable} from "mobx"
 import {observer} from "mobx-react-lite"
 
-const socket = io.connect("ws://localhost:3001")
+const wsUrl = process.env.NODE_ENV !== "production"
+  ? "ws://localhost:3001"
+  : "https://contacts-manager-08of.onrender.com:3001"
+
+const socket = io.connect(wsUrl)
 const messages = observable.array([])
 
 socket.on("message", data => {

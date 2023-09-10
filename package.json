@@ -40,7 +40,6 @@
     "react-css-theme-switcher": "^0.3.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
-    "react-use-websocket": "^4.3.1",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.0.7"
   }
